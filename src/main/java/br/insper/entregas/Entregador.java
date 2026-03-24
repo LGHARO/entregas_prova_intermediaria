@@ -1,10 +1,28 @@
 package br.insper.entregas;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 public class Entregador {
+
+    @NotBlank
     private String nome;
+    @Email
     private String email;
+    @NotBlank
     private String documento;
+    @NotBlank
     private String veiculo;
+
+    private Boolean ativo;
+
+    public Boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
 
     public String getNome() {
         return nome;

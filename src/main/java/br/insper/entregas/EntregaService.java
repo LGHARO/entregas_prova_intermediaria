@@ -20,25 +20,44 @@ public class EntregaService {
     private ClienteService clienteService;
 
     // recebe a entrega e a cadastra
-    public Entrega cadastraEntrega(Entrega entrega){
-        if (entregas.containsKey(entrega.getId())){
+    public Entrega cadastraEntrega(EntregaDTO entregaDTO){
+
+        // falta de informacoes
+        if (entregaDTO.getCliente() == null){
+            throw new ResponseStatusException(HttpStatus.CONFLICT,"Não é possivel adicionar uma entrega sem um cliente atrelado");
+        }
+        if (entregaDTO.getDataSolicitacao() == null){
+            throw new ResponseStatusException(HttpStatus.CONFLICT,"Não é possivel adicionar uma entrega sem uma data de solicitação atrelada");
+        }
+
+        // conflitos de existencia
+        if (entregas.containsKey(entregaDTO.getId())){
             throw new ResponseStatusException(HttpStatus.CONFLICT,"Entrega ja existe");
         }
-        if (!clienteService.clientes.containsKey(entrega.getCliente().getCpf())){
+        if (clienteService.clientes.get(entregaDTO.getCliente().getCpf()).getAtivo() == false){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Cliente não existe");
         }
-        if (!entregadorService.entregadores.containsKey(entrega.getEntregador().getDocumento())){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Entregador não existe");
+
+        // se existe um entregador ativo, colocamos ele para realizar a entrega, se nao retornamos um erro
+        if(entregadorService.listaEntregadors().size() != 0){
+            Entrega entrega = new Entrega(entregaDTO.getId(), entregaDTO.getDataSolicitacao(), entregaDTO.getCliente(), entregaDTO.isAtivo(),  entregadorService.listaEntregadors().getFirst());
+            entregas.put(entrega.getId(), entrega);
+            return entrega;
         }
-        entregas.put(entrega.getId(), entrega);
-        return entrega;
+        else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Não existem entregadores ativos para fazer a sua entrega no momento");
+        }
+
+
     }
 
     // lista os entregas cadastrados
     public Collection<Entrega> listaEntregas() {
         Collection<Entrega> resposta = new ArrayList<>();
         for (Entrega entrega : entregas.values()) {
-            resposta.add(entrega);
+            if (entrega.isAtivo() == true){
+                resposta.add(entrega);
+            }
         }
         return resposta;
     }
@@ -47,6 +66,9 @@ public class EntregaService {
     public Entrega buscaEntrega(String id) {
         if (!entregas.containsKey(id)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Entrega não existe");
+        }
+        if (entregas.get(id).isAtivo() == false){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"entrega não existe");
         }
         return entregas.get(id);
     }
@@ -76,6 +98,6 @@ public class EntregaService {
         if (!entregas.containsKey(id)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Entrega não existe");
         }
-        entregas.remove(id);
+        buscaEntrega(id).setAtivo(false);
     }
 }

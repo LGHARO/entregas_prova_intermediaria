@@ -26,7 +26,9 @@ public class ClienteService {
     public Collection<Cliente> listaClientes() {
         Collection<Cliente> resposta = new ArrayList<>();
         for (Cliente cliente : clientes.values()) {
-            resposta.add(cliente);
+            if (cliente.getAtivo() == true){
+                resposta.add(cliente);
+            }
         }
         return resposta;
     }
@@ -34,6 +36,9 @@ public class ClienteService {
     // pega um cliente
     public Cliente buscaCliente(String id) {
         if (!clientes.containsKey(id)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Cliente não existe");
+        }
+        if (clientes.get(id).getAtivo() == false){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Cliente não existe");
         }
         return clientes.get(id);
@@ -66,6 +71,11 @@ public class ClienteService {
             clientes.get(cpf).setTelefone(cliente.getTelefone());
         }
 
+        // ativo
+        if (cliente.getAtivo() != null){
+            clientes.get(cpf).setAtivo(cliente.getAtivo());
+        }
+
         return clientes.get(cpf);
     }
 
@@ -74,6 +84,6 @@ public class ClienteService {
         if (!clientes.containsKey(id)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Cliente não existe");
         }
-        clientes.remove(id);
+        buscaCliente(id).setAtivo(false);
     }
 }

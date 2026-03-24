@@ -15,8 +15,8 @@ public class EntregaController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/entregas")
-    public Entrega postEntregas(@Valid @RequestBody Entrega entrega){
-        return entregaService.cadastraEntrega(entrega);
+    public Entrega postEntregas(@Valid @RequestBody EntregaDTO entregaDTO){
+        return entregaService.cadastraEntrega(entregaDTO);
     }
 
     @GetMapping("/entregas")

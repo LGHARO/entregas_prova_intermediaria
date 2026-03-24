@@ -1,11 +1,29 @@
 package br.insper.entregas;
 
-public class Cliente {
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
+
+public class Cliente {
+    @NotBlank
     private String nome;
+    @Email
     private String email;
+    @NotBlank
     private String telefone;
+    @NotBlank
     private String cpf;
+
+    private Boolean ativo;
+
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
 
     public String getNome() {
         return nome;

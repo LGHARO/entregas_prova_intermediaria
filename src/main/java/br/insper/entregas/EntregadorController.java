@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 public class EntregadorController {
@@ -20,7 +21,7 @@ public class EntregadorController {
     }
 
     @GetMapping("/entregadores")
-    public Collection<Entregador> getEntregadors(){
+    public List<Entregador> getEntregadors(){
         return entregadorService.listaEntregadors();
     }
 

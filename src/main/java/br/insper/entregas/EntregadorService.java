@@ -7,6 +7,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class EntregadorService {
@@ -23,10 +24,12 @@ public class EntregadorService {
     }
 
     // lista os entregadores cadastrados
-    public Collection<Entregador> listaEntregadors() {
-        Collection<Entregador> resposta = new ArrayList<>();
+    public List<Entregador> listaEntregadors() {
+        List<Entregador> resposta = new ArrayList<>();
         for (Entregador entregador : entregadores.values()) {
-            resposta.add(entregador);
+            if (entregador.isAtivo() == true){
+                resposta.add(entregador);
+            }
         }
         return resposta;
     }
@@ -36,8 +39,13 @@ public class EntregadorService {
         if (!entregadores.containsKey(documento)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Entregador não existe");
         }
+        if (entregadores.get(documento).isAtivo() == false){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Entregador não existe");
+        }
         return entregadores.get(documento);
     }
+
+
 
     // troca informações de um entregador especifico
     public Entregador atualizaEntregador(String documento, Entregador entregador) {
@@ -74,6 +82,6 @@ public class EntregadorService {
         if (!entregadores.containsKey(documento)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Entregador não existe");
         }
-        entregadores.remove(documento);
+        buscaEntregador(documento).setAtivo(false);
     }
 }
