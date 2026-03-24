@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 @Service
 public class ClienteService {
-    private HashMap<String, Cliente> clientes = new HashMap<>();
+    HashMap<String, Cliente> clientes = new HashMap<>();
 
     // recebe o cliente e o cadastra
     public Cliente cadastraCliente(Cliente cliente){

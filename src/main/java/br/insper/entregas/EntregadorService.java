@@ -11,7 +11,7 @@ import java.util.HashMap;
 @Service
 public class EntregadorService {
 
-    private HashMap<String, Entregador> entregadores = new HashMap<>();
+    HashMap<String, Entregador> entregadores = new HashMap<>();
 
     // recebe o entregador e o cadastra
     public Entregador cadastraEntregador(Entregador entregador){
