@@ -91,6 +91,11 @@ public class EntregaService {
             entregas.get(id).setDataSolicitacao(entrega.getDataSolicitacao());
         }
 
+        // ativo
+        if (entrega.isAtivo() != null){
+            entregas.get(id).setAtivo(entrega.isAtivo());
+        }
+
         return entregas.get(id);
     }
 

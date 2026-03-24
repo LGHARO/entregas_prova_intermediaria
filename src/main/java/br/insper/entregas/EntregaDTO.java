@@ -9,13 +9,13 @@ public class EntregaDTO {
     private String id;
     private LocalDateTime dataSolicitacao;
     private Cliente cliente;
-    private boolean ativo;
+    private Boolean ativo;
 
-    public boolean isAtivo() {
+    public Boolean isAtivo() {
         return ativo;
     }
 
-    public void setAtivo(boolean ativo) {
+    public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
     }
 
