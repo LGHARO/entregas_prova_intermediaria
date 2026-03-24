@@ -74,6 +74,11 @@ public class EntregadorService {
             entregadores.get(documento).setVeiculo(entregador.getVeiculo());
         }
 
+        // ativo
+        if (entregador.isAtivo() != null){
+            entregadores.get(documento).setAtivo(entregador.isAtivo());
+        }
+
         return entregadores.get(documento);
     }
 

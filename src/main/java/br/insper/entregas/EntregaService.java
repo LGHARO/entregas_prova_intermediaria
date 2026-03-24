@@ -30,11 +30,12 @@ public class EntregaService {
             throw new ResponseStatusException(HttpStatus.CONFLICT,"Não é possivel adicionar uma entrega sem uma data de solicitação atrelada");
         }
 
+
         // conflitos de existencia
         if (entregas.containsKey(entregaDTO.getId())){
             throw new ResponseStatusException(HttpStatus.CONFLICT,"Entrega ja existe");
         }
-        if (clienteService.clientes.get(entregaDTO.getCliente().getCpf()).getAtivo() == false){
+        if (entregaDTO.getCliente().getAtivo() == false){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Cliente não existe");
         }
 
